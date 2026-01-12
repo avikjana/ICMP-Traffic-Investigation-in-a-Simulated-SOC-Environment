@@ -1,0 +1,74 @@
+# SOC Network Traffic Analysis – ICMP Monitoring Lab
+Document Type:** Technical Lab Report (ISO-style)
+Prepared By:- Avik Jana
+Date:12.01.2026
+1. Purpose
+The purpose of this document is to record the setup, execution, observation, and analysis of ICMP network traffic in a controlled laboratory environment. This activity was conducted to establish baseline network behavior and to understand how ICMP traffic is captured, analyzed, and documented from a SOC (Security Operations Center) perspective.
+2. Scope
+This document covers:
+Lab environment configuration
+ICMP traffic generation
+Packet capture methodology
+Traffic analysis using Wireshark
+Observations and conclusions
+The scope is limited to internal lab traffic and does not include real-world production systems
+ 3. Definitions and Abbreviations
+* SOC: Security Operations Center
+* ICMP: Internet Control Message Protocol
+* PCAP: Packet Capture File
+* VM: Virtual Machine
+## 4. Lab Environment
+### 4.1 Host System
+* Platform: Single Physical PC
+* Virtualization Software: Oracle VirtualBox
+### 4.2 Virtual Machines
+| Role                     | Operating System | IP Address     |
+| ------------------------ | ---------------- | -------------- |
+| SOC Analyst / Monitoring | Kali Linux       | 192.168.56.101 |
+| Internal Host (Victim)   | Ubuntu Linux     | 192.168.56.102 |
+### 4.3 Network Configuration
+* Network Type: Host-only Adapter
+* Subnet: 192.168.56.0/24
+* DHCP: Enabled
+This configuration ensures full visibility of east-west traffic between virtual machines.
+## 5. Tools and Utilities
+* tcpdump – Used for live packet capture and evidence collection
+* Wireshark – Used for packet-level inspection and analysis
+* ping – Used to generate ICMP traffic
+## 6. Methodology
+ 6.1 Traffic Generation
+ICMP traffic was generated from the Ubuntu virtual machine using the `ping` utility targeting the Kali Linux machine. This simulates standard network reachability testing performed by users or administrators.
+### 6.2 Packet Capture
+Packet capture was initiated on the Kali Linux machine using the following command:
+sudo tcpdump -i eth0 -w soc_icmp_lab.pcap
+The capture was allowed to run while ICMP traffic was active. After sufficient packets were collected, the capture process was manually terminated.
+### 6.3 Evidence Handling
+Captured traffic was stored in PCAP format for offline analysis. No packets were dropped during capture
+## 7. Analysis
+### 7.1 Tool Used
+Wireshark was used to open and analyze the captured PCAP file.
+### 7.2 Observations
+* Multiple ICMP Echo Request packets were observed from 192.168.56.102 to 192.168.56.101
+* Corresponding ICMP Echo Reply packets were observed in response
+* Sequence numbers increased sequentially
+* Packet intervals were consistent
+* No malformed packets or payload anomalies were detected
+### 7.3 Traffic Classification
+Based on frequency, pattern, and context, the ICMP traffic was classified as **normal diagnostic activity**.
+## 8. SOC Assessment
+From a SOC analyst perspective:
+* The traffic matches expected baseline ICMP behavior
+* No indicators of scanning, flooding, or denial-of-service attempts were identified
+* No alert escalation was required
+## 9. Conclusion
+This lab successfully demonstrated the process of capturing and analyzing ICMP traffic in a controlled SOC-style environment. Establishing a baseline understanding of normal ICMP behavior is essential for differentiating between legitimate network diagnostics and malicious reconnaissance or flood attacks.
+## 10. Learning Outcomes
+* Practical experience with packet capture using tcpdump
+* Hands-on analysis of ICMP protocol behavior
+* Understanding of SOC-style evidence handling and documentation
+* Improved confidence in network traffic investigation
+## 11. Future Enhancements
+* Simulation of ICMP flood activity for anomaly comparison
+* Integration with SIEM tools for alert generation
+* Extension to DNS and TCP-based traffic analysis
+**End of Document**
